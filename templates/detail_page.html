@@ -1,0 +1,23 @@
+{% comment %} {% extends 'index.html' %} {% endcomment %}
+
+
+<body>  
+  {% block content %}
+    <h1> Image: </h1> 
+    <p> {{ image.image_file }}</p>
+    <img src="{{ image.image_file.url}}" alt="{{ image.image_file }}">
+ 
+  <form action="" method="post">
+    {% csrf_token %}
+    
+    <label for="width">width:</label></br>
+    <input id="width" type="text" name="width" maxlength="10"></br>
+
+    <label for="height">height:</label></br>
+    <input id="height" type="text" name="height" maxlength="10"></br></br>
+
+    <input type="submit" value="Submit">
+  </form>
+  {% endblock %}
+</body>
+</html>

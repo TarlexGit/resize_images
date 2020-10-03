@@ -1,0 +1,14 @@
+{% extends 'detail_page.html' %}
+
+
+<form action="" method="post">
+    {% csrf_token %}
+    
+    <label for="width">Subject:</label>
+    <input id="width" type="integer" name="width" maxlength="10" required>
+
+    <label for="height">height:</label>
+    <input id="height" type="text" name="height" maxlength="10" required>
+
+    <input type="submit" value="Submit">
+</form>

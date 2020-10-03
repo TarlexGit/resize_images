@@ -1,0 +1,23 @@
+<!doctype html> 
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+
+  <title>Images</title>
+  <meta name="description" content="The HTML5 Herald">
+  <meta name="author" content="SitePoint">
+ 
+  {% load static %}
+</head>
+
+<body> 
+  <header><h1>Список изображений</h1></header>
+  {% block content %}
+    <h1> Images: </h1>
+    {% for image in object_list %}
+        {% include 'image_card.html' %}
+    {% endfor %}
+  {% endblock %}
+  <a href="add/">add image</a>
+</body>
+</html>
