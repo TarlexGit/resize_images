@@ -9,7 +9,7 @@ from ImagesWeb.settings import BASE_DIR
 from PIL import Image 
 from io import StringIO, BytesIO
 from django.core.files.base import ContentFile
-
+import requests
 
 class GetImages(TemplateView):  
     template_name = 'index.html' 
@@ -36,8 +36,8 @@ def add_image(request):
                 response = requests.get(url)
                 url_img = Image.open(BytesIO(response.content))    
                 thumb_io = BytesIO()
-                url_img.save(thumb_io, url_img.format, quality=60)
-                instance.image_file.save(url_img.filename, ContentFile(thumb_io.getvalue()), save=False)
+                url_img.save(thumb_io, "JPEG", quality=60)
+                instance.image_file.save(url_img.filename+'.jpg', ContentFile(thumb_io.getvalue()), save=False)
                 instance.save()
             elif image_file:
                 form.save() 
