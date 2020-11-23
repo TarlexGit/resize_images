@@ -2,14 +2,13 @@ from django.shortcuts import render
 from .models import Image_model
 from django.views.generic.base import TemplateView
 from django.http import Http404, HttpResponseRedirect, request 
-from .forms import AddImageForm
-import os
-from ImagesWeb.settings import BASE_DIR
+from .forms import AddImageForm 
 
 from PIL import Image 
-from io import StringIO, BytesIO
+from io import BytesIO
 from django.core.files.base import ContentFile
 import requests
+
 
 class GetImages(TemplateView):  
     template_name = 'index.html' 
@@ -36,8 +35,16 @@ def add_image(request):
                 response = requests.get(url)
                 url_img = Image.open(BytesIO(response.content))    
                 thumb_io = BytesIO()
-                url_img.save(thumb_io, "JPEG", quality=60)
-                instance.image_file.save(url_img.filename+'.jpg', ContentFile(thumb_io.getvalue()), save=False)
+
+                # convert for good save 
+                # circumventing the error "cannot write mode RGBA as JPEG"
+                rgb_im = url_img.convert('RGB')
+
+                rgb_im.save(thumb_io, "JPEG", quality=60)
+
+                img_name_from_url = url.split('/')[-1]
+
+                instance.image_file.save(img_name_from_url, ContentFile(thumb_io.getvalue()), save=False)
                 instance.save()
             elif image_file:
                 form.save() 
@@ -50,8 +57,8 @@ def add_image(request):
 
 def except_both(request):
     return render(request, template_name='both.html')
-  
-import os
+   
+
 from .services import resize_both
 class ImageDetail(TemplateView):    
     template_name = 'detail_page.html'
@@ -73,6 +80,7 @@ class ImageDetail(TemplateView):
             obj = Image_model.objects.get(pk=pk)
       
             img_open = str(obj.image_file) 
+
             if form['width'] != "":
                 try:
                     width = int(form['width'])

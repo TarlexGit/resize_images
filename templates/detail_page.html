@@ -3,8 +3,8 @@
 
 <body>  
   {% block content %}
-    <h1> Image: </h1> 
-    <p> {{ image.image_file }}</p>
+    <a href="{% url 'list_images' %}">Назад к списку</a>
+    <h1> {{ image.image_file }} </h1>  
     <img src="{{ image.image_file.url}}" alt="{{ image.image_file }}">
  
   <form action="" method="post">
